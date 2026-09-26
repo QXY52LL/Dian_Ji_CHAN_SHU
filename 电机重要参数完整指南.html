@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="系统整理无刷永磁电机的15个重要参数、5个核心参数、设计重点和参数关系。">
+<title>电机重要参数完整指南｜无刷永磁电机</title>
+<style>
+  :root {
+    --ink:#17253d;--muted:#596a80;--navy:#102a46;--blue:#195c94;--teal:#137e84;--border:#dce6ed;
+    --bg:#f4f7fa;--paper:#fff;--soft:#eaf3f6;--accent:#e3a34c;--tablehead:#ecf3f7;--formula:#eaf3f5;
+    --radius:17px;--shadow:0 8px 30px rgba(16,42,70,.065)
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:30px}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.78 "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif}
+  a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+  button{font:inherit;cursor:pointer}
+  .cover{background:linear-gradient(125deg,#0f2946 0%,#154969 65%,#106575 100%);color:#fff;position:relative;overflow:hidden}
+  .cover:before,.cover:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.13);border-radius:50%;pointer-events:none}
+  .cover:before{width:480px;height:480px;right:-140px;top:-210px;box-shadow:0 0 0 65px rgba(255,255,255,.035),0 0 0 130px rgba(255,255,255,.025)}
+  .cover:after{width:180px;height:180px;left:60%;bottom:-130px;box-shadow:0 0 0 45px rgba(255,255,255,.022)}
+  .cover-inner{max-width:1230px;margin:auto;padding:72px 35px 77px;position:relative;z-index:1}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#a9ebec;font-size:13px;letter-spacing:2px;font-weight:700;text-transform:uppercase}
+  .eyebrow::before{content:"";display:inline-block;width:25px;height:2px;background:#85dcde}
+  h1{font-size:clamp(34px,4.6vw,56px);line-height:1.22;margin:18px 0 16px;letter-spacing:.01em}
+  .subtitle{color:#cfdee7;max-width:860px;font-size:18px;margin:0}
+  .hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:31px}
+  .hero-tags span{display:inline-block;padding:5px 13px;border-radius:999px;border:1px solid rgba(180,224,229,.38);background:rgba(255,255,255,.06);font-size:13px;color:#e5f8fb}
+  .layout{display:grid;grid-template-columns:224px minmax(0,1fr);gap:32px;max-width:1230px;margin:0 auto;padding:38px 32px 80px;align-items:start}
+  .toc{position:sticky;top:26px;background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 15px}
+  .toc p{margin:0 13px 12px;font-size:12px;font-weight:800;color:#7b8ca0;letter-spacing:2px}
+  .toc a{display:block;padding:9px 12px;margin:2px 0;color:#465c73;font-size:14px;border-radius:8px;line-height:1.5}
+  .toc a:hover{background:#edf6fa;color:var(--blue);text-decoration:none}
+  .toc .sub{padding-left:25px;font-size:13px;color:#667d91}
+  .toc .divider{height:1px;background:var(--border);margin:11px 10px}
+  .toc .print{border:1px solid #c5dce7;color:#1f5874;background:#f4fafc;width:calc(100% - 20px);margin:10px 10px 0;padding:7px 12px;border-radius:8px;font-size:13px;font-weight:700}
+  .content{min-width:0}
+  .lead,.section,.conclusion{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .lead{padding:28px 35px;margin-bottom:27px;position:relative;border-left:5px solid var(--teal)}
+  .lead p{margin:0 0 14px}.lead p:last-child{margin-bottom:0}
+  .section{padding:34px 35px 37px;margin-bottom:28px}
+  .section-kicker{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:2px;margin-bottom:7px}
+  h2{font-size:clamp(24px,3vw,31px);line-height:1.4;letter-spacing:-.02em;margin:0 0 17px;color:#112d49}
+  h3{font-size:20px;line-height:1.5;color:#173e61;margin:0 0 10px}
+  p{margin:0 0 14px}
+  .section-note{color:var(--muted);margin-bottom:22px}
+  .table-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+  table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px;line-height:1.6}
+  thead th{background:var(--tablehead);text-align:left;color:#244461;font-weight:800;font-size:13px;letter-spacing:.01em;white-space:nowrap}
+  td,th{padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even){background:#fafcfd}
+  tbody tr:hover{background:#edf8fa}
+  td:first-child{font-weight:650;color:#1c3d5a}
+  .no{font-size:11px;display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;margin-right:9px;border-radius:7px;background:#e8f3f7;color:#21637e;font-weight:850;vertical-align:middle}
+  .unit{white-space:nowrap;color:#51738c;font-weight:600}
+  .metric{border:1px solid #dce9ef;background:#fff;border-radius:13px;padding:23px 25px;margin:16px 0}
+  .metric h3{display:flex;align-items:flex-start;gap:11px;margin-bottom:12px}
+  .metric h3 .count{background:#126d7f;color:#fff;border-radius:9px;display:inline-flex;min-width:29px;height:29px;align-items:center;justify-content:center;font-size:15px;flex:none;margin-top:1px}
+  .formula{background:var(--formula);border-radius:10px;text-align:center;padding:18px 14px;font-family:Georgia,"Times New Roman",serif;color:#153c5b;font-size:clamp(20px,3vw,26px);font-style:italic;margin:15px 0 13px;overflow-x:auto;white-space:nowrap}
+  .formula sub,.formula sup{font-size:.63em}
+  .fraction{display:inline-flex;vertical-align:middle;flex-direction:column;align-items:center;font-style:italic;line-height:1.45}
+  .fraction .top{border-bottom:1.5px solid #214f68;padding:0 12px 2px}
+  .fraction .bottom{padding:2px 12px 0}
+  .explain{font-size:14px;color:var(--muted)}
+  .example{border-radius:9px;background:#fff8e9;border-left:4px solid #e5ae58;padding:12px 15px;margin:13px 0;color:#58462e;font-size:14px}
+  .section-label{display:inline-block;padding:3px 10px;background:#eaf6f3;border-radius:5px;color:#126a67;font-size:12px;font-weight:750;margin-bottom:15px}
+  .diagram{padding:20px 15px 8px;background:#f6fafb;border:1px solid var(--border);border-radius:13px;overflow-x:auto;margin-top:24px}
+  .diagram svg{display:block;width:100%;min-width:610px;height:auto}
+  .caption{font-size:13px;text-align:center;color:#728295;margin-top:8px}
+  .conclusion{padding:26px 31px;border-left:5px solid #d19a49;background:#fffdf8}
+  .conclusion h2{font-size:22px;margin-bottom:9px}
+  .flow-steps{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:17px}
+  .flow-steps span{display:inline-block;padding:7px 11px;background:#e9f2f6;border:1px solid #cee1e9;border-radius:8px;color:#22465f;font-size:13px;font-weight:750}
+  .flow-steps b{font-size:18px;color:#b7955b}
+  .footer{text-align:center;color:#7b8a9a;font-size:12px;margin:32px 0 0}
+  @media(max-width:930px){.layout{grid-template-columns:1fr;padding:20px 17px 45px;gap:17px}.toc{position:static;padding:14px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}.toc p{width:100%;margin:0 5px 4px}.toc a{padding:7px 10px;margin:0}.toc .sub,.toc .divider{display:none}.toc .print{width:auto;margin:0 0 0 auto}.cover-inner{padding:45px 24px 48px}}
+  @media(max-width:600px){body{font-size:15px}.lead,.section{padding:22px 19px}.conclusion{padding:20px 18px}.subtitle{font-size:15px}.hero-tags{gap:6px}.hero-tags span{font-size:12px}td,th{padding:10px 12px}table{font-size:13px}.metric{padding:17px 14px}h3{font-size:18px}.toc .print{display:none}}
+  @media print{@page{size:A4;margin:13mm 13mm}*{print-color-adjust:exact;-webkit-print-color-adjust:exact}body{background:#fff;font-size:11.5pt}.cover{break-after:avoid}.cover-inner{padding:22px 6px 28px}.cover:before,.cover:after{display:none}.cover h1{font-size:30pt}.layout{display:block;max-width:none;padding:10px 0}.toc{display:none}.lead,.section,.conclusion{box-shadow:none;border-color:#d9e2e9;margin:0 0 16px;break-inside:auto}.lead,.section{padding:19px 22px}.metric,.formula,.diagram,.conclusion{break-inside:avoid}.metric{padding:13px 17px}h2,h3{break-after:avoid}thead{display:table-header-group}tr{break-inside:avoid}.diagram svg{min-width:0}.footer{margin-top:15px}}
+</style>
+</head>
+<body>
+<header class="cover" id="top">
+  <div class="cover-inner">
+    <div class="eyebrow">MOTOR ENGINEERING · 参数与设计</div>
+    <h1>电机重要参数完整指南</h1>
+    <p class="subtitle">从转矩、转速与效率，到槽极配合、气隙及转矩脉动：以无刷永磁电机为主，梳理运行参数与设计参数之间的联系。</p>
+    <div class="hero-tags"><span>15 个重要参数</span><span>5 个核心概念</span><span>12 项设计关注点</span><span>关键参数关系图</span></div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="toc" aria-label="目录">
+    <p>内容目录</p>
+    <a href="#overview">内容概览</a>
+    <a href="#parameters">01 · 15 个重要参数</a>
+    <a href="#core">02 · 5 个核心参数</a>
+    <a class="sub" href="#torque">转矩</a>
+    <a class="sub" href="#speed">转速</a>
+    <a class="sub" href="#power">功率</a>
+    <a class="sub" href="#efficiency">效率</a>
+    <a class="sub" href="#temperature">温升</a>
+    <a href="#design">03 · 无刷电机设计参数</a>
+    <a href="#relations">04 · 参数之间的联系</a>
+    <a href="#recommendation">外转子电机设计建议</a>
+    <div class="divider"></div>
+    <button class="print" type="button" onclick="window.print()">打印 / 保存为 PDF ↗</button>
+  </nav>
+  <main class="content">
+    <div class="lead" id="overview">
+      <p><strong>电机最重要的参数</strong>主要有转矩、转速、功率、效率、电压、电流、温升、极数、槽数和气隙。如果准备自己设计电机，尤其是无刷电机，还需要关注磁通密度、反电动势、绕组参数以及转矩脉动等。</p>
+      <p>这些参数并不是独立的。例如，增大电流通常可以提高转矩，但也会增加铜损和发热；提高转速可能增加输出功率，但同时也可能增加铁损和机械损耗。</p>
+    </div>
+    <section class="section" id="parameters">
+      <div class="section-kicker">PART 01 / 参数速查</div>
+      <h2>一、电机最重要的 15 个参数</h2>
+      <p class="section-note">以下以无刷永磁电机为主，部分参数同样适用于其他类型的电机。</p>
+      <div class="table-scroll">
+        <table aria-label="15个重要电机参数"><thead><tr><th style="width:37%">参数</th><th style="width:18%">单位</th><th>主要作用</th></tr></thead><tbody>
+          <tr><td><span class="no">01</span>转矩 <i>T</i></td><td class="unit">N·m</td><td>决定电机带动负载的能力</td></tr>
+          <tr><td><span class="no">02</span>转速 <i>n</i></td><td class="unit">rpm</td><td>决定电机旋转的快慢</td></tr>
+          <tr><td><span class="no">03</span>输出功率 <i>P</i></td><td class="unit">W、kW</td><td>衡量电机的机械输出能力</td></tr>
+          <tr><td><span class="no">04</span>效率 <i>η</i></td><td class="unit">%</td><td>决定电能转化为机械能的比例</td></tr>
+          <tr><td><span class="no">05</span>额定电压 <i>U</i></td><td class="unit">V</td><td>确定电机的供电要求</td></tr>
+          <tr><td><span class="no">06</span>额定电流 <i>I</i></td><td class="unit">A</td><td>影响持续输出能力和发热</td></tr>
+          <tr><td><span class="no">07</span>最大转矩</td><td class="unit">N·m</td><td>决定短时间内的最大负载能力</td></tr>
+          <tr><td><span class="no">08</span>启动转矩</td><td class="unit">N·m</td><td>决定启动时带动负载的能力</td></tr>
+          <tr><td><span class="no">09</span>转矩常数 <i>K</i><sub>t</sub></td><td class="unit">N·m/A</td><td>反映单位电流产生的转矩</td></tr>
+          <tr><td><span class="no">10</span>反电动势常数 <i>K</i><sub>e</sub></td><td class="unit">V·s/rad</td><td>影响电机的电压与转速关系</td></tr>
+          <tr><td><span class="no">11</span>绕组电阻 <i>R</i></td><td class="unit">Ω</td><td>影响铜损、发热和电压降</td></tr>
+          <tr><td><span class="no">12</span>绕组电感 <i>L</i></td><td class="unit">H、mH</td><td>影响电流变化及控制响应</td></tr>
+          <tr><td><span class="no">13</span>温升 <i>ΔT</i></td><td class="unit">K、℃</td><td>影响持续工作能力与寿命</td></tr>
+          <tr><td><span class="no">14</span>极数 2<i>p</i></td><td class="unit">极</td><td>影响电频率、电磁设计及转矩特性</td></tr>
+          <tr><td><span class="no">15</span>气隙长度 <i>g</i></td><td class="unit">mm</td><td>影响磁通、转矩和制造难度</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+    <section class="section" id="core">
+      <div class="section-kicker">PART 02 / 原理与计算</div>
+      <h2>二、最值得掌握的 5 个核心参数</h2>
+      <article class="metric" id="torque">
+        <h3><span class="count">1</span>转矩：决定电机有多大力气</h3>
+        <p>转矩越大，电机带动重负载或克服阻力的能力通常越强。</p>
+        <p>无刷永磁电机在适当的控制条件下，转矩可近似表示为：</p>
+        <div class="formula" role="math" aria-label="T 等于 K t 乘 I q">T = K<sub>t</sub> I<sub>q</sub></div>
+        <p class="explain">其中，<i>I</i><sub>q</sub> 是产生转矩的电流分量。实际转矩还取决于磁路、绕组和控制方式。</p>
+      </article>
+      <article class="metric" id="speed">
+        <h3><span class="count">2</span>转速：决定电机转得多快</h3>
+        <p>转速与供电电压、反电动势、负载以及控制策略密切相关。</p>
+        <p>对永磁电机而言，在其他条件相近时，提高电压通常有利于提高可达到的转速。极数越多，相同机械转速下的电频率越高。</p>
+      </article>
+      <article class="metric" id="power">
+        <h3><span class="count">3</span>功率：由转矩和转速共同决定</h3>
+        <div class="formula" role="math" aria-label="P 等于 T 乘 n 除以 9 点 549">P = <span class="fraction"><span class="top">T × n</span><span class="bottom">9.549</span></span></div>
+        <p class="explain">其中，<i>P</i> 为瓦特（W），<i>T</i> 为 N·m，<i>n</i> 为 rpm。</p>
+        <div class="example"><strong>计算示例：</strong>一台电机在 3000 rpm 时输出 1 N·m 转矩，其机械输出功率约为 <strong>314 W</strong>。这也说明不能只看转矩而忽略转速。</div>
+      </article>
+      <article class="metric" id="efficiency">
+        <h3><span class="count">4</span>效率：决定有多少能量被浪费</h3>
+        <div class="formula" role="math" aria-label="效率等于输出功率除以输入功率乘以百分之百">η = <span class="fraction"><span class="top">P<sub>out</sub></span><span class="bottom">P<sub>in</sub></span></span> × 100%</div>
+        <p>效率越高，在相同输出功率下所需的输入功率越少，产生的总损耗也越少。不过，电机在不同转速和负载下的效率通常不同。</p>
+      </article>
+      <article class="metric" id="temperature">
+        <h3><span class="count">5</span>温升：决定电机能持续运行多久</h3>
+        <p>电机工作时会产生铜损、铁损和机械损耗，其中绕组铜损通常与电流平方成正比：</p>
+        <div class="formula" role="math" aria-label="P cu 等于 I 的平方乘以 R">P<sub>cu</sub> = I<sup>2</sup> R</div>
+        <p class="explain">这是单个等效绕组电阻的表达式；三相电机需要计算各相损耗之和。</p>
+        <p>需要重点关注绕组温度、磁铁温度、绝缘等级及散热条件。</p>
+      </article>
+    </section>
+    <section class="section" id="design">
+      <div class="section-kicker">PART 03 / 电磁与结构设计</div>
+      <h2>三、如果是自己设计无刷电机，还要关注什么？</h2>
+      <span class="section-label">设计阶段重点</span>
+      <p class="section-note">除了上面的运行参数，还需要重点关注以下结构和电磁参数。</p>
+      <div class="table-scroll"><table aria-label="无刷电机设计参数与考虑事项"><thead><tr><th style="width:36%">参数</th><th>设计时需要考虑的问题</th></tr></thead><tbody>
+        <tr><td>定子槽数</td><td>影响绕组布置、齿槽转矩及谐波</td></tr>
+        <tr><td>转子极数</td><td>影响电频率、绕组匹配及转矩特性</td></tr>
+        <tr><td>气隙长度</td><td>影响气隙磁密、磁拉力和加工公差</td></tr>
+        <tr><td>磁铁厚度及牌号</td><td>影响磁通、成本及抗退磁能力</td></tr>
+        <tr><td>绕组匝数</td><td>影响反电动势、转矩常数和电阻</td></tr>
+        <tr><td>导线截面积</td><td>影响电阻、电流密度和发热</td></tr>
+        <tr><td>铁芯材料</td><td>影响饱和特性和铁损</td></tr>
+        <tr><td>槽满率</td><td>影响铜利用率与绕线工艺</td></tr>
+        <tr><td>齿槽转矩</td><td>影响低速平稳性</td></tr>
+        <tr><td>转矩脉动</td><td>影响振动、噪声和运行平稳性</td></tr>
+        <tr><td>转子转动惯量</td><td>影响加减速响应</td></tr>
+        <tr><td>功率密度</td><td>衡量单位质量或体积的输出能力</td></tr>
+      </tbody></table></div>
+    </section>
+    <section class="section" id="relations">
+      <div class="section-kicker">PART 04 / 参数联系</div>
+      <h2>四、参数之间有什么联系？</h2>
+      <h3>无刷电机关键参数关系</h3>
+      <p class="section-note">下面是简化关系图。实际性能还受磁饱和、温度、驱动器和负载条件限制。</p>
+      <div class="diagram" role="img" aria-label="关系图：电压、反电动势与绕组参数影响转速；电流、磁通与绕组参数影响转矩；转矩和转速共同决定输出功率；电流影响铜损；铜损、铁损和机械损耗影响效率与温升；温升及磁铁温度限制持续工作能力。">
+        <svg viewBox="0 0 780 500" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0 0 L6 3 L0 6Z" fill="#7da2b5"/></marker>
+            <marker id="arrowGold" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0 0 L6 3 L0 6Z" fill="#ca9a50"/></marker>
+          </defs>
+          <style>.node{fill:#fff;stroke:#d4e2e9;stroke-width:1.5}.hot{fill:#e9f4f4;stroke:#6db6ba;stroke-width:1.8}.result{fill:#173f5a;stroke:#173f5a}.name{font:700 19px "Microsoft YaHei",sans-serif;fill:#1b4560;text-anchor:middle}.small{font:13px "Microsoft YaHei",sans-serif;fill:#597184;text-anchor:middle}.resultname{font:700 19px "Microsoft YaHei",sans-serif;fill:#fff;text-anchor:middle}.line{fill:none;stroke:#7da2b5;stroke-width:2;marker-end:url(#arrow)}.gold{fill:none;stroke:#ca9a50;stroke-width:2;marker-end:url(#arrowGold)}</style>
+          <!-- supply and design inputs -->
+          <rect x="20" y="30" rx="12" ry="12" width="206" height="72" class="node"/>
+          <text x="123" y="58" class="name">电压 + 反电动势</text><text x="123" y="81" class="small">含负载与控制策略</text>
+          <rect x="286" y="30" rx="12" ry="12" width="206" height="72" class="node"/>
+          <text x="389" y="58" class="name">电流 + 磁通</text><text x="389" y="81" class="small">受绕组与磁路影响</text>
+          <rect x="552" y="30" rx="12" ry="12" width="206" height="72" class="node"/>
+          <text x="655" y="58" class="name">电流 + 绕组电阻</text><text x="655" y="81" class="small">铜损与热量</text>
+          <!-- second row -->
+          <rect x="35" y="172" rx="13" ry="13" width="174" height="76" class="hot"/>
+          <text x="122" y="202" class="name">转速 n</text><text x="122" y="225" class="small">旋转速度</text>
+          <rect x="302" y="172" rx="13" ry="13" width="174" height="76" class="hot"/>
+          <text x="389" y="202" class="name">转矩 T</text><text x="389" y="225" class="small">负载驱动能力</text>
+          <rect x="569" y="172" rx="13" ry="13" width="174" height="76" class="hot"/>
+          <text x="656" y="202" class="name">铜损 + 其他损耗</text><text x="656" y="225" class="small">铁损 / 机械损耗</text>
+          <path d="M123 102 V172" class="line"/><path d="M389 102 V172" class="line"/><path d="M655 102 V172" class="line"/>
+          <!-- output and thermal -->
+          <rect x="205" y="321" rx="13" ry="13" width="174" height="76" class="result"/>
+          <text x="292" y="351" class="resultname">机械输出功率</text><text x="292" y="376" style="font:14px Georgia,serif;fill:#d2eaf1;text-anchor:middle">P = T × ω</text>
+          <rect x="486" y="321" rx="13" ry="13" width="206" height="76" class="node"/>
+          <text x="589" y="351" class="name">效率与温升</text><text x="589" y="375" class="small">影响持续工作能力</text>
+          <path d="M122 248 V281 H258 V321" class="line"/>
+          <path d="M389 248 V281 H325 V321" class="line"/>
+          <path d="M656 248 V321" class="gold"/>
+          <path d="M379 359 H486" class="line"/>
+          <path d="M589 397 V429 H389 V454" class="gold"/>
+          <rect x="288" y="454" rx="9" width="202" height="36" fill="#fff5e7" stroke="#ead3a9"/>
+          <text x="389" y="478" style="font:700 13px 'Microsoft YaHei',sans-serif;fill:#976b2b;text-anchor:middle">持续转矩 / 持续功率限制</text>
+          <text x="430" y="345" style="font:12px 'Microsoft YaHei',sans-serif;fill:#8294a0;text-anchor:middle">输出与损耗</text>
+        </svg>
+        <div class="caption">图示为定性关系，不代表所有参数都呈简单线性关系。</div>
+      </div>
+      <p style="margin-top:21px">增大电流通常有利于提高转矩，却也使铜损和发热增加；提高转速可能增加输出功率，但铁损和机械损耗也可能上升。合理的电机设计需要同时满足性能、效率、温升与制造约束。</p>
+    </section>
+    <aside class="conclusion" id="recommendation">
+      <div class="section-kicker">设计实践 / 外转子无刷电机</div>
+      <h2>建议先确定性能目标，再确定机械结构</h2>
+      <p>对于正在研究的外转子无刷电机，建议先确定<strong>目标转速、持续转矩、峰值转矩、供电电压和最大允许温度</strong>，然后再设计槽极配合、绕组、磁铁和气隙。这样能避免先画好机械结构，最后才发现电机达不到预期性能。</p>
+      <div class="flow-steps" aria-label="设计顺序"><span>明确性能目标</span><b>→</b><span>槽极配合</span><b>→</b><span>绕组设计</span><b>→</b><span>磁铁与气隙</span><b>→</b><span>性能与温升校核</span></div>
+    </aside>
+    <p class="footer">电机重要参数完整指南 · 单文件离线 HTML · 适合电脑阅读、教学及打印</p>
+  </main>
+</div>
+</body>
+</html>
